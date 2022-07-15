@@ -5,7 +5,7 @@ type Movie = {
   title: string
   thumbnail: string
   description: string
-  coment: string
+  coment:string
 }
 
 type State = {
@@ -14,49 +14,18 @@ type State = {
 }
 
 let state: State = {
-  movies: [
-    {
-      id: 1,
-      title: 'The Dark Knight',
-      thumbnail:
-        'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-      coment:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
-    },
-    {
-      id: 2,
-      title: 'Star Wars',
-      thumbnail:
-        'https://play-lh.googleusercontent.com/7OTx1DboUIszuMbHZwFHhYOLRQspWozEx7xFtYKG674mtGA_PSRPGIdtv7jmR4jQ9d0=w240-h480-rw',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-      coment:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
-    },
-    {
-      id: 3,
-      title: 'The Godfather',
-      thumbnail:
-        'https://images-na.ssl-images-amazon.com/images/I/714ZOEiVNtL._RI_.jpg',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-      coment:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
-    },
-    {
-      id: 4,
-      title: 'Jaws',
-      thumbnail:
-        'https://m.media-amazon.com/images/M/MV5BN2U1MWE1NTMtYjQ2ZC00MTFmLWFmYjItODMyNGYxOTAyZmEzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-      coment:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.'
-    }
-  ],
-  selectedMovie: null
+  movies: [],
+  selectedMovie : null
+}
+
+function getMovies(){
+  fetch('http://localhost:3001/movies')
+  .then(resp => resp.json())
+  .then(movies => {
+    state.movies = movies
+    render()
+  }
+  )
 }
 
 function deselectedMoive(){
@@ -76,7 +45,6 @@ function renderMoiveDetails() {
   if (mainEl === null) return
   if(state.selectedMovie === null) return
 
-
   mainEl.textContent = ''
 
   let backbuttonEl = document.createElement('button')
@@ -87,7 +55,7 @@ function renderMoiveDetails() {
   })
 
   let movieEl = document.createElement('li')
-  movieEl.className = 'movie'
+  movieEl.className = 'movie movie-detail'
 
   let thumbnailEl = document.createElement('img')
   thumbnailEl.src = state.selectedMovie.thumbnail
@@ -106,17 +74,18 @@ function renderMoiveDetails() {
   comentEl.className = 'movie-coment'
 
   movieEl.append(backbuttonEl,thumbnailEl, titleEl, descriptionEl, comentEl)
+  mainEl.append(movieEl)
 }
 
 function renderMovie(movie: Movie) {
   let movieEl = document.createElement('li')
   movieEl.className = 'movie'
-  movieEl.addEventListener('click', function () {
+
+  let thumbnailEl = document.createElement('img')
+  thumbnailEl.addEventListener('click', function () {
     selectMovie(movie)
     render()
   })
-
-  let thumbnailEl = document.createElement('img')
   thumbnailEl.src = movie.thumbnail
   thumbnailEl.className = 'movie-thumbnail'
 
@@ -129,18 +98,28 @@ function renderMovie(movie: Movie) {
   descriptionEl.textContent = movie.description
   descriptionEl.className = 'movie-description'
 
+
   let comentEl = document.createElement('p')
+
   comentEl.textContent = movie.coment
   comentEl.className = 'movie-coment'
 
-  movieEl.append(thumbnailEl, titleEl, descriptionEl, comentEl)
+  let deleteMovieEl = document.createElement('button')
+  deleteMovieEl.textContent = 'Delete'
+  deleteMovieEl.addEventListener('click', function () {
+    render()
+  })
+
+
+  movieEl.append(thumbnailEl, titleEl, descriptionEl, comentEl, deleteMovieEl)
   return movieEl
+
 }
 
 function renderMovieGrid(mainEl: HTMLElement) {
 
   let titleEl = document.createElement('h1')
-  titleEl.textContent = 'Movies'
+  titleEl.textContent = 'Netflox'
 
   let movieGridEl = document.createElement('ul')
   movieGridEl.className = 'movie-grid'
@@ -150,7 +129,9 @@ function renderMovieGrid(mainEl: HTMLElement) {
   }
 
   mainEl.append(titleEl, movieGridEl)
+
 }
+
 
 function render() {
   let mainEl = document.querySelector('main')
@@ -159,5 +140,10 @@ function render() {
 
   if (state.selectedMovie) renderMoiveDetails()
   else renderMovieGrid(mainEl)
+
+  
 }
 render()
+getMovies()
+
+

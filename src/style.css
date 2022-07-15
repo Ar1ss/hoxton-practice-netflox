@@ -4,10 +4,15 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+main{
+  background-color: black;
+  height: 100vh;
+}
 h1{
   text-align: center;
   padding: 1rem;
   font-size: 4rem;
+  color: red;
 }
 img{
   width: 500px;
@@ -20,4 +25,61 @@ img{
   list-style: none;
   padding: 3rem;
   place-content: center;
+ 
 }
+.movie-grid li{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: rgb(222, 222, 222);
+  gap: 1rem;
+  text-align: center;
+}
+.movie-grid li p{
+  padding: 1rem;
+}
+.movie-grid button{
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: rgb(222, 222, 222);
+  color: black;
+  border: solid 1px black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.movie-grid button:hover{
+  background-color: red;
+  color: white;
+}
+
+.movie-detail{
+  display: grid;
+  place-items: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: white;
+ ;
+}
+
+.movie-detail button{
+  background-color: #00bcd4;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.movie-detail button:hover{
+  background-color: #0097a7;
+}
+.movie-detail button:active{
+  background-color: #00838f;
+}
+
+
